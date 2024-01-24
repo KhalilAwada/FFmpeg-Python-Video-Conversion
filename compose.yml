@@ -1,0 +1,17 @@
+version: '3.2'
+services:
+  resize:
+    build: ./
+    image: ffmpeg-python:latest
+    entrypoint: ""
+    environment:
+      - PYTHONUNBUFFERED=1
+    # command: ["bash"]
+    command: ["python",'-u',"app2.py","/mnt/nfs/GoPro/2021-06-05"]
+    working_dir: /app
+    volumes:
+      - /mnt/nfs:/mnt/nfs
+      - ./app:/app
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    # docker run -it --rm -e PYTHONUNBUFFERED=1 -v /mnt/nfs:/mnt/nfs -v $(pwd)/app:/app --entrypoint "" ffmpeg-python:latest python -u app.py /mnt/nfs/GoPro/2021-06-05
