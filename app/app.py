@@ -81,6 +81,7 @@ def main():
     directory_to_search = sys.argv[-1]
 
     converted_files_file = "/mnt/nfs/converted_files.txt"
+    locked_files_file = "/mnt/nfs/locked_files.txt"
 
     if not os.path.exists(directory_to_search):
         print("Invalid directory path. Please provide a valid path.")
@@ -95,7 +96,16 @@ def main():
 
         for video_file in video_files:
             converted_files = read_converted_files(converted_files_file)
+            locked_files = read_converted_files(locked_files_file)
             if video_file not in converted_files:
+
+                if video_file in locked_files:
+                    print("already being processed skipping:")
+                    print(video_file)
+                    continue
+
+                write_converted_file(locked_files_file, {video_file})
+                print("file locked :")
 
                 print(video_file)
             
