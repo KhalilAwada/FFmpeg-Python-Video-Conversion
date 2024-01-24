@@ -1,4 +1,4 @@
-FROM jrottenberg/ffmpeg:4.4-ubuntu
+FROM linuxserver/ffmpeg:latest
 WORKDIR /app
 RUN apt update 
 RUN apt install python3 python3-pip -y
