@@ -76,6 +76,18 @@ def on_message_handler(percent: float,
     # print(str(progress(integer)), ' \r{:.2f}%'.format(percent), flush=True)
     sys.stdout.flush()
 
+def unlock_file(locked_files_file, video_file):
+    try:
+        locked_files = read_converted_files(locked_files_file)
+        if video_file in locked_files:
+            locked_files.remove(video_file)
+            with open(locked_files_file, 'w') as file:
+                for locked_file in locked_files:
+                    file.write(f"{locked_file}\n")
+            print(f"File unlocked: {video_file}")
+    except Exception as e:
+        print(f"Error unlocking file: {e}")
+
 def main():
     # directory_to_search = input("Enter the directory path to search: ")
     directory_to_search = sys.argv[-1]
@@ -120,6 +132,8 @@ def main():
                     os.rename(output_file, video_file)
                 else:
                     print("could not convert: "+str(video_file))
+
+                unlock_file(locked_files_file, video_file)
 
             else:
                 print("already converted skipping :")
